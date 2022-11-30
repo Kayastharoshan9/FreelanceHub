@@ -3,5 +3,11 @@
 
 {% block content %}
 <h1>{{project.title}}</h1>
+<hr>
 <p>{{project.description}}</p>
+<hr>
+{% for tag in project.tags.all %}
+    <button>{{tag}}</button>
+{% endfor %}
+
 {% endblock content %}

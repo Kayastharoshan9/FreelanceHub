@@ -3,11 +3,28 @@
 
 {% block content %}
 <h1>Projects</h1>
-<ul>
-    {% for project in projects %}
-    <li>
-        <p><a href="/projects/{{project.id}}">{{project.title}} -- {{project.description}}</a></p>
-    </li>
-    {% endfor %}
-</ul>
+
+<table>
+    <thead>
+        <th>Id</th>
+        <th>Project</th>
+        <th>Positive Votes</th>
+        <th>Votes</th>
+        <th>created</th>
+        <th>OP</th>
+    </thead>
+    <tbody>
+        {% for project in projects %}
+        <tr>
+            <td>{{project.id}}</td>
+            <td>{{project.title}}</td>
+            <td>{{project.vote_total}}</td>
+            <td>{{project.vote_ratio}}</td>
+            <td>{{project.created}}</td>
+            <td><a href="/projects/{{project.id}}/">View</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock content %}
