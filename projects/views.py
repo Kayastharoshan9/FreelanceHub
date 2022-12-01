@@ -3,11 +3,13 @@ from .models import Project
 from django.views import View
 from .forms import ProjectForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .utils import searchProjects
 
 
 def projects(request):
-    projectsList = Project.objects.all()
-    context = {'projects': projectsList}
+    projects, search_query = searchProjects(request)
+
+    context = {'projects': projects, 'search_query': search_query}
     return render(request, 'projects/projects.html', context)
 
 def project(request, pk):

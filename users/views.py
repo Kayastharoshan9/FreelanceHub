@@ -7,6 +7,7 @@ from django.views import View
 from .models import Profile
 from .forms import CustomUserCreationForm, ProfileForm, SkillForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .utils import searchProfiles
 
 
 class LoginUserView(View):
@@ -70,11 +71,11 @@ class RegisterUserView(View):
         return render(request, 'users/login_register.html', {'page': self.page, 'form': form})
 
 
-class ProfileListView(View):
-    def get(self, request):
-        profiles = Profile.objects.all()
-        context = {'profiles': profiles}
-        return render(request, 'users/profiles.html', context)
+def profiles(request):
+    profiles, search_query = searchProfiles(request)
+
+    context = {'profiles': profiles, 'search_query': search_query}
+    return render(request, 'users/profiles.html', context)
 
 
 class ProfileDetailView(View):
