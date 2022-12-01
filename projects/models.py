@@ -7,7 +7,7 @@ class Project(models.Model):
     owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
-    featured_image = models.ImageField(upload_to='projects', null=True, blank=True, default="default.jpg")
+    featured_image = models.ImageField(upload_to='projects', null=True, blank=True, default="projects/default.jpg")
     demo_link = models.CharField(max_length=2000, null=True, blank=True)
     source_link = models.CharField(max_length=2000, null=True, blank=True)
     tags = models.ManyToManyField('Tag', blank=True)

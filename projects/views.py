@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project
 from django.views import View
 from .forms import ProjectForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def projects(request):
@@ -14,7 +15,7 @@ def project(request, pk):
     return render(request, 'projects/single_project.html', {'project': projectObj})
 
 
-class CreateProject(View):
+class CreateProject(LoginRequiredMixin, View):
     form_class = ProjectForm
 
     def get(self, request):
@@ -23,12 +24,15 @@ class CreateProject(View):
 
     def post(self, request):
         form = self.form_class(request.POST, request.FILES)
+        profile = request.user.profile
         if form.is_valid():
-            form.save()
+            project = form.save(commit=False)
+            project.owner = profile
+            project = form.save()
             return redirect('projects')
 
 
-class UpdateProject(View):
+class UpdateProject(LoginRequiredMixin, View):
     form_class = ProjectForm
 
     def setup(self, request, *args, **kwargs):
