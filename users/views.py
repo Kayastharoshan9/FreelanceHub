@@ -84,3 +84,12 @@ class ProfileDetailView(View):
         context = {'profile': profile, 'topSkills': topSkills,
                "otherSkills": otherSkills}
         return render(request, 'users/profile_detail.html', context)
+
+
+class UserAccountView(LoginRequiredMixin, View):
+    def get(self, request):
+        profile = request.user.profile
+        skills = profile.skill_set.all()
+        projects = profile.project_set.all()
+        context = {'profile': profile, 'skills': skills, 'projects': projects}
+        return render(request, 'users/account.html', context)
