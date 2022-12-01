@@ -7,11 +7,11 @@ from .forms import ProjectForm
 def projects(request):
     projectsList = Project.objects.all()
     context = {'projects': projectsList}
-    return render(request, 'projects/list.html', context)
+    return render(request, 'projects/projects.html', context)
 
 def project(request, pk):
     projectObj = Project.objects.get(id=pk)
-    return render(request, 'projects/single.html', {'project': projectObj})
+    return render(request, 'projects/single_project.html', {'project': projectObj})
 
 
 class CreateProject(View):
@@ -22,7 +22,7 @@ class CreateProject(View):
         return render(request, 'projects/project_form.html', {'form': form})
 
     def post(self, request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('projects')
@@ -42,7 +42,7 @@ class UpdateProject(View):
 
     def post(self, request, pk):
         project = self.project_instance
-        form = self.form_class(request.POST, instance=project)
+        form = self.form_class(request.POST, request.FILES, instance=project)
         if form.is_valid():
             form.save()
             return redirect('projects')
