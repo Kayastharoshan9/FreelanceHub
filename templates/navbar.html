@@ -3,10 +3,6 @@
 <!-- Header Section -->
 <header class="header">
     <div class="container container--narrow">
-        <a href="/" class="header__logo">
-            <img src="{% static 'img/logo.svg' %} " alt="DevSearch Logo" />
-        </a>
-
         <nav class="header__nav">
             <input type="checkbox" id="responsive-menu" />
             <label for="responsive-menu" class="toggle-menu">
@@ -22,11 +18,15 @@
                 {% if request.user.is_authenticated %}
                 <li class="header__menuItem"><a href="#">Inbox</a></li>
                 <li class="header__menuItem"><a href="#">Account</a></li>
-                <li class="header__menuItem"><a href="#" class="btn btn--main">Logout</a></li>
+                <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--main">Logout</a></li>
                 {% else %}
-                <li class="header__menuItem"><a href="#" class="btn btn--sub">Login/Sign Up</a></li>
+                <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--main">Login/Sign Up</a></li>
                 {% endif %}
             </ul>
         </nav>
+        <a href="/" class="header__logo">
+            <img src="{% static 'img/logo.svg' %} " alt="DevSearch Logo" />
+        </a>
+
     </div>
 </header>
