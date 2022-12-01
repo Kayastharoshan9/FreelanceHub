@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.views import View
 from .models import Profile
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -93,3 +93,23 @@ class UserAccountView(LoginRequiredMixin, View):
         projects = profile.project_set.all()
         context = {'profile': profile, 'skills': skills, 'projects': projects}
         return render(request, 'users/account.html', context)
+
+
+class EditAccountView(LoginRequiredMixin, View):
+    form = ProfileForm
+
+    def setup(self, request, *args, **kwargs):
+        self.profile_instance = request.user.profile
+        return super().setup(self, request, *args, **kwargs)
+
+    def get(self, request):
+        form = self.form(instance=self.profile_instance)
+        context = {'form': form}
+        return render(request, 'users/profile_form.html', context)
+
+    def post(self, request):
+        form = ProfileForm(request.POST, request.FILES, instance=self.profile_instance)
+        if form.is_valid():
+            form.save()
+            return redirect('account')
+        return render(request, 'users/profile_form.html', {'form': form})
