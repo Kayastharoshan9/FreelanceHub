@@ -65,7 +65,7 @@ class RegisterUserView(View):
             user.save()
             messages.success(request, 'User account was created!')
             login(request, user)
-            return redirect('/')
+            return redirect('/account')
         else:
             messages.error(request, 'An error has occurred during registration')
         return render(request, 'users/login_register.html', {'page': self.page, 'form': form})
