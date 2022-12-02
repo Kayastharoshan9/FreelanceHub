@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project
 from django.views import View
-from .forms import ProjectForm
+from .forms import ProjectForm, ReviewForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from .utils import searchProjects, paginateProjects
 
 
@@ -13,9 +14,22 @@ def projects(request):
     context = {'projects': projects, 'search_query': search_query, 'custom_range': custom_range}
     return render(request, 'projects/projects.html', context)
 
+
 def project(request, pk):
     projectObj = Project.objects.get(id=pk)
-    return render(request, 'projects/single_project.html', {'project': projectObj})
+    form = ReviewForm()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        review = form.save(commit=False)
+        review.project = projectObj
+        review.owner = request.user.profile
+        review.save()
+
+        projectObj.getVoteCount
+
+        messages.success(request, 'Your review was successfully submitted!')
+        return redirect('project', pk=projectObj.id)
+    return render(request, 'projects/single_project.html', {'project': projectObj, 'form': form})
 
 
 class CreateProject(LoginRequiredMixin, View):
