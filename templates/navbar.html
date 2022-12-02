@@ -10,7 +10,7 @@
                 <div class="toggle-menu__lines"></div>
             </label>
             <ul class="header__menu">
-                <li class="header__menuItem"><a href="{% url 'profiles' %}">Developers</a></li>
+                <li class="header__menuItem"><a href="{% url 'profiles' %}">Freelancers</a></li>
                 <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
 
 
@@ -18,14 +18,14 @@
                 {% if request.user.is_authenticated %}
                 <li class="header__menuItem"><a href="{% url 'inbox' %}">Inbox</a></li>
                 <li class="header__menuItem"><a href="{% url 'account' %}">Account</a></li>
-                <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--main">Logout</a></li>
+                <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sm btn--main">Logout</a></li>
                 {% else %}
-                <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--main">Login/Sign Up</a></li>
+                <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sm btn--main">Login/Sign Up</a></li>
                 {% endif %}
             </ul>
         </nav>
         <a href="/" class="header__logo">
-            <img src="{% static 'img/logo.svg' %} " alt="DevSearch Logo" />
+            <img src="{% static 'img/logo.png' %} " alt="DevSearch Logo" />
         </a>
 
     </div>

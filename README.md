@@ -1,5 +1,5 @@
 # Freelancer
-
+[Demo](https://freelancer.pythonanywhere.com/)
 
 # Installation
 * 1 - clone repo https://github.com/mohsensami/freelancer
@@ -15,9 +15,9 @@
 
 # Features
 * Share Projects
-* Message other developers
+* Message other Freelancers
 * Rate others work
-* Search other developers
+* Search other Freelancers
 
 # Course Overview
 * Basic Djagno Overview
@@ -34,7 +34,7 @@
 * Postgres
 * Django REST Framework
 
-# Home Page
+<!-- # Home Page
 <img src="https://github.com/divanov11/Django-2021/blob/master/resources/images/Devsearch%20Home.jpg?raw=true">  
 
 # Projects Page
@@ -45,4 +45,4 @@
 
 # User Inbox
 <img src="https://github.com/divanov11/Django-2021/blob/master//resources/images/Devsearch%20Inbox.jpg?raw=true">  
-
+ -->

@@ -32,7 +32,7 @@
     position: sticky;
     z-index: 111;
     background-color: var(--color-sub);
-    padding: 1.5rem 0;
+    padding: 11px 0;
   }
   
   .header > .container {
@@ -42,7 +42,8 @@
   }
   
   .header__logo > img {
-    height: 3.8rem;
+    height: 50px;
+    padding-top: 9px;
   }
   
   .header__nav > ul {
@@ -258,7 +259,7 @@
   }
   
   /*=======================
-    Developers
+    Freelancers
   ========================*/
   
   .devlist {
@@ -486,21 +487,18 @@
     Projects Page
   ========================*/
   .projects > .hero-section {
-    background: var(--color-sub-lighter);
+    background: #345c67;
     height: 30vh;
+    color: #fff;
   }
   
   .projects .hero-section__box {
     margin-bottom: 2.5rem;
   }
-  
-  .projects .hero-section__box > h2 {
-    color: var(--color-sub);
-  }
+
   
   .projects .hero-section__box > h2 > span {
     font-weight: 700;
-    color: var(--color-sub);
   }
   
   .projectsList {

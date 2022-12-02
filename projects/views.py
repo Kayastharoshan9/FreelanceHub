@@ -1,9 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Project
-from django.views import View
-from .forms import ProjectForm, ReviewForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .models import Project, Tag
+from .forms import ProjectForm, ReviewForm
 from .utils import searchProjects, paginateProjects
 
 
@@ -18,6 +17,7 @@ def projects(request):
 def project(request, pk):
     projectObj = Project.objects.get(id=pk)
     form = ReviewForm()
+
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         review = form.save(commit=False)
@@ -29,58 +29,60 @@ def project(request, pk):
 
         messages.success(request, 'Your review was successfully submitted!')
         return redirect('project', pk=projectObj.id)
+
     return render(request, 'projects/single_project.html', {'project': projectObj, 'form': form})
 
 
-class CreateProject(LoginRequiredMixin, View):
-    form_class = ProjectForm
+@login_required(login_url="login")
+def createProject(request):
+    profile = request.user.profile
+    form = ProjectForm()
 
-    def get(self, request):
-        form = self.form_class()
-        return render(request, 'projects/project_form.html', {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST, request.FILES)
-        profile = request.user.profile
+    if request.method == 'POST':
+        newtags = request.POST.get('newtags').replace(',',  " ").split()
+        form = ProjectForm(request.POST, request.FILES)
         if form.is_valid():
             project = form.save(commit=False)
             project.owner = profile
-            project = form.save()
-            return redirect('projects')
+            project.save()
+
+            for tag in newtags:
+                tag, created = Tag.objects.get_or_create(name=tag)
+                project.tags.add(tag)
+            return redirect('account')
+
+    context = {'form': form}
+    return render(request, "projects/project_form.html", context)
 
 
-class UpdateProject(LoginRequiredMixin, View):
-    form_class = ProjectForm
+@login_required(login_url="login")
+def updateProject(request, pk):
+    profile = request.user.profile
+    project = profile.project_set.get(id=pk)
+    form = ProjectForm(instance=project)
 
-    def setup(self, request, *args, **kwargs):
-        self.project_instance = get_object_or_404(Project, pk = kwargs['pk'])
-        return super().setup(request, *args, **kwargs)
+    if request.method == 'POST':
+        newtags = request.POST.get('newtags').replace(',',  " ").split()
 
-    def get(self, request, pk):
-        project = self.project_instance
-        form = self.form_class(instance=project)
-        return render(request, 'projects/project_form.html', {'form': form})
-
-    def post(self, request, pk):
-        project = self.project_instance
-        form = self.form_class(request.POST, request.FILES, instance=project)
+        form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
-            form.save()
-            return redirect('projects')
+            project = form.save()
+            for tag in newtags:
+                tag, created = Tag.objects.get_or_create(name=tag)
+                project.tags.add(tag)
+
+            return redirect('account')
+
+    context = {'form': form, 'project': project}
+    return render(request, "projects/project_form.html", context)
 
 
-class DeleteProject(View):
-    form_class = ProjectForm
-
-    def setup(self, request, *args, **kwargs):
-        self.project_instance = get_object_or_404(Project, pk = kwargs['pk'])
-        return super().setup(request, *args, **kwargs)
-
-    def get(self, request, pk):
-        obj = self.project_instance
-        return render(request, 'projects/delete_template.html', {'obj': obj})
-
-    def post(self, request, pk):
-        project = self.project_instance
+@login_required(login_url="login")
+def deleteProject(request, pk):
+    profile = request.user.profile
+    project = profile.project_set.get(id=pk)
+    if request.method == 'POST':
         project.delete()
         return redirect('projects')
+    context = {'object': project}
+    return render(request, 'delete_template.html', context)
