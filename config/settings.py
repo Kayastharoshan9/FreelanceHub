@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+    'sorl.thumbnail',
 
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig'
