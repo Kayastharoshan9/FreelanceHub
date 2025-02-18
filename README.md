@@ -31,7 +31,7 @@
 
 # Tech Stack
 * Django
-* Postgres
+* SQlite
 * Django REST Framework
 
 # FreelanceHub
